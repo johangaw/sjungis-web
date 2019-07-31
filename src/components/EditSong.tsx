@@ -25,5 +25,5 @@ export const EditSong: React.FunctionComponent<RouteComponentProps<{songId: stri
 
   return song
     ? <SongForm song={song} onSubmit={onSubmit}></SongForm>
-    : <div>"Loading..."</div>
+    : <div>Loading...</div>
 }
