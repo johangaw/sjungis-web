@@ -21,7 +21,7 @@ export const ShowSong: React.FunctionComponent<RouteComponentProps<Props>> = (
   useEffect(() => {
     SongService.get(match.params.songId)
       .then((song) => setSong(song));
-  }, [])
+  }, [match.params.songId])
   return song
     ? <div>
         <h2>{song.name}</h2>
