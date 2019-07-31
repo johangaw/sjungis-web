@@ -14,7 +14,7 @@ function trimLines(text: string): string {
     .join('\n');
 }
 
-export const Song: React.FunctionComponent<RouteComponentProps<Props>> = (
+export const ShowSong: React.FunctionComponent<RouteComponentProps<Props>> = (
   { match }
 ) => {
   const [song, setSong] = useState<ISong|null>(null);
