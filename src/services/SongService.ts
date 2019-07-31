@@ -41,7 +41,7 @@ class SongService {
   }
 
   edit(song: ISong): Promise<ISong> {
-    return sendJSON(`http://localhost:8080/api/v1/songs/${song.id}`, song, 'PUT');
+    return sendJSON(`http://localhost:8080/api/v1/songs/${song._id}`, song, 'PUT');
   }
 }
 

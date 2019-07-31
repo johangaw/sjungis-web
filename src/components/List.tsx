@@ -11,7 +11,7 @@ export const List: React.FC = () => {
 
   return <ul className="list-group">
     {songs.map(song => 
-      <Link className="list-group-item list-group-item-action" key={song.id} to={'/låt/' + song.id}>{song.id}. {song.name}</Link>
+      <Link className="list-group-item list-group-item-action" key={song._id} to={'/låt/' + song._id}>{song.name}</Link>
     )}
   </ul>
 }

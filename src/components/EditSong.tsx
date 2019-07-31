@@ -10,8 +10,8 @@ export const EditSong: React.FunctionComponent<RouteComponentProps<{songId: stri
 
   const onSubmit = async (params: ISongParams) => {
     try {
-      const song = await SongService.edit({...params, id: match.params.songId});
-      history.push(`/låt/${song.id}`);
+      const song = await SongService.edit({...params, _id: match.params.songId});
+      history.push(`/låt/${song._id}`);
     } catch(err) {
       console.error('kunde inte updatera...', err);
     }
