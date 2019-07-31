@@ -7,21 +7,16 @@ export const NewSong: React.FunctionComponent<RouteComponentProps<{}>> = (
 ) => {
 
   const onSubmit = async (event: any) => {
-    console.log(event);
     event.stopPropagation();
-    event.preventDefault();
-    console.log(event.target);
-    
+    event.preventDefault();    
     try {
       const song = await SongService.create({
         lyrics: event.target.lyrics.value,
         name: event.target.name.value,
         melody: event.target.melody.value,
       });
-      console.log(song);
       history.push(`/låt/${song.id}`);
     } catch(err) {
-      
       console.error('kunde inte skapa...', err);
     }
   };
