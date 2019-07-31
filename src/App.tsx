@@ -4,6 +4,7 @@ import './App.css';
 import { List } from './components/List';
 import { ShowSong } from './components/ShowSong';
 import { NewSong } from './components/NewSong';
+import { EditSong } from './components/EditSong';
 
 const App: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const App: React.FC = () => {
         <Route exact path="/" component={List} />
         <Route exact path="/ny" component={NewSong} />
         <Route exact path="/låt/:songId" component={ShowSong} />
+        <Route exact path="/låt/:songId/updatera" component={EditSong} />
       </main>
     </Router>
   );

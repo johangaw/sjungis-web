@@ -6,4 +6,6 @@ export interface ISong {
   melody: string;
 }
 
+export type ISongParams = Omit<ISong, 'id'>;
+
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>

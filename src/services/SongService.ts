@@ -1,34 +1,30 @@
-import { ISong } from "../etc";
+import { ISong, ISongParams } from "../etc";
 
-function getJSON<T>(url: string): Promise<T> {
-  return fetch(url)
-    .then(async (response) => {
-        if (response.status !== 200) {
-          throw await response.json();
-        }
-        return response.json();
-      }
-    )
+function parseResponse<T>(): (res: Response) => Promise<T> {
+  return async (response) => {
+    if (200 <= response.status && response.status < 400) {
+      return response.json();
+    }
+    throw await response.json();
+  };
 }
 
-function postJSON<T>(url: string, data: any): Promise<T> {
+function getJSON<T>(url: string): Promise<T> {
+  return fetch(url).then(parseResponse())
+}
+
+function sendJSON<T>(url: string, data: any, method: 'PUT'|'POST'): Promise<T> {
   return fetch(
     url,
     {
-      method: 'POST',
+      method: method,
       body: JSON.stringify(data),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
     }
-  ).then(async (response) => {
-        if (response.status !== 201) {
-          throw await response.json();
-        }
-        return response.json();
-      }
-    )
+  ).then(parseResponse())
 }
 
 class SongService {
@@ -40,8 +36,12 @@ class SongService {
     return getJSON(`http://localhost:8080/api/v1/songs/${id}`);
   }
 
-  create(songParam: Omit<ISong, 'id'>): Promise<ISong> {
-    return postJSON('http://localhost:8080/api/v1/songs', songParam);
+  create(songParam: ISongParams): Promise<ISong> {
+    return sendJSON('http://localhost:8080/api/v1/songs', songParam, 'POST');
+  }
+
+  edit(song: ISong): Promise<ISong> {
+    return sendJSON(`http://localhost:8080/api/v1/songs/${song.id}`, song, 'PUT');
   }
 }
 
