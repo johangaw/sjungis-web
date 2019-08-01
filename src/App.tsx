@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import './App.css';
 import { List } from './components/List';
 import { ShowSong } from './components/ShowSong';
@@ -16,10 +16,12 @@ const App: React.FC = () => {
         </nav>
       </header>
       <main className="container pt-3 ">
-        <Route exact path="/" component={List} />
-        <Route exact path="/ny" component={NewSong} />
-        <Route exact path="/låt/:songId" component={ShowSong} />
-        <Route exact path="/låt/:songId/updatera" component={EditSong} />
+        <Switch>
+          <Route exact path="/" component={List} />
+          <Route exact path="/ny" component={NewSong} />
+          <Route exact path="/updatera/:songId" component={EditSong} />
+          <Route exact path="/:songId" component={ShowSong} />
+        </Switch>
       </main>
     </Router>
   );

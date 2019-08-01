@@ -4,8 +4,7 @@ export interface ISong {
   name: string;
   lyrics: string;
   melody: string;
+  urlName: string;
 }
 
-export type ISongParams = Omit<ISong, '_id'>;
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+export type ISongParams = Pick<ISong, 'name'|'lyrics'|'melody'>

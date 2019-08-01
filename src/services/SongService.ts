@@ -34,8 +34,8 @@ class SongService {
     return getJSON(`${API_URL}/api/v1/songs`);
   }
 
-  get(id: string): Promise<ISong> {
-    return getJSON(`${API_URL}/api/v1/songs/${id}`);
+  get(urlName: string): Promise<ISong> {
+    return getJSON(`${API_URL}/api/v1/songs/${urlName}`);
   }
 
   create(songParam: ISongParams): Promise<ISong> {

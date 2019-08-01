@@ -10,7 +10,7 @@ export const NewSong: React.FunctionComponent<RouteComponentProps<{}>> = (
   const onSubmit = async (params: ISongParams) => {
     try {
       const song = await SongService.create(params);
-      history.push(`/låt/${song._id}`);
+      history.push(`/${song.urlName}`);
     } catch(err) {
       console.error('kunde inte skapa...', err);
     }
