@@ -11,7 +11,7 @@ const App: React.FC = () => {
     <Router>
       <header>
         <nav className="navbar navbar-dark bg-dark">
-          <Link to="/">Dryckesvisor.se</Link>
+          <Link to="/">Sjungis.se</Link>
           <Link to="/ny">New</Link>
         </nav>
       </header>
