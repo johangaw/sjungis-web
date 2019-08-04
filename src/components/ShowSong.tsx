@@ -34,7 +34,7 @@ export const ShowSong: React.FunctionComponent<RouteComponentProps<Props>> = (
         <EditButton className="float-right" onClick={() => history.push(RoutingService.editSong(match.params.songId)) }></EditButton>
         <h2>{song.name}</h2>
         <p>
-          <img className="pr-1" style={noteImageStyles} src={process.env.PUBLIC_URL + '/note.svg'}></img> {song.melody}
+          <img className="pr-1" style={noteImageStyles} src={process.env.PUBLIC_URL + '/note.svg'} alt="Song melody"></img> {song.melody}
         </p>
         <pre>
           {trimLines(song.lyrics)}

@@ -13,7 +13,7 @@ type Props = {
 export const EditButton: React.FunctionComponent<Props> = ({onClick, className = ''}) => {
   return(
     <button className={'btn p-1 ' + className} onClick={onClick}>
-      <img style={editStyle} src={process.env.PUBLIC_URL + '/edit.svg'} alt="Edit image"/>
+      <img style={editStyle} src={process.env.PUBLIC_URL + '/edit.svg'} alt="Edit song"/>
     </button>
   )
 }
