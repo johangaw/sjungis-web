@@ -10,6 +10,10 @@ type Props = {
   songId: string;
 }
 
+const noteImageStyles = {
+  height: '20px'
+}
+
 function trimLines(text: string): string {
   return text
     .split('\n')
@@ -29,7 +33,9 @@ export const ShowSong: React.FunctionComponent<RouteComponentProps<Props>> = (
     ? <div>
         <EditButton className="float-right" onClick={() => history.push(RoutingService.editSong(match.params.songId)) }></EditButton>
         <h2>{song.name}</h2>
-        <p>Mel: {song.melody}</p>
+        <p>
+          <img className="pr-1" style={noteImageStyles} src={process.env.PUBLIC_URL + '/note.svg'}></img> {song.melody}
+        </p>
         <pre>
           {trimLines(song.lyrics)}
         </pre>
