@@ -21,7 +21,7 @@ export const SongForm: React.FunctionComponent<Props> = (
     onSubmit({name, melody, lyrics});
   }
 
-  return <form autoComplete={'no'} onSubmit={handleSubmit}>
+  return <form autoComplete={'off'} onSubmit={handleSubmit}>
     <div className="form-group">
       <label htmlFor="name">Titel</label>
       <input className="form-control" id="name" value={name} onChange={(event) => setName(event.target.value)}></input>
