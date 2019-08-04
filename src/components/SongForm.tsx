@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ISongParams } from '../etc';
-import { Spinner } from './Spinner';
+import { Spinner } from './utils/Spinner';
 
 type Props = {
   song: ISongParams;

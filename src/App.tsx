@@ -5,14 +5,15 @@ import { ListSongs } from './components/ListSong';
 import { ShowSong } from './components/ShowSong';
 import { NewSong } from './components/NewSong';
 import { EditSong } from './components/EditSong';
+import RoutingService from './services/RoutingService';
 
 const App: React.FC = () => {
   return (
     <Router>
       <header>
         <nav className="navbar navbar-dark bg-dark">
-          <Link to="/">Sjungis.se</Link>
-          <Link to="/ny">New</Link>
+          <Link to={RoutingService.list()}>Sjungis.se</Link>
+          <Link to={RoutingService.newSong()}>New</Link>
         </nav>
       </header>
       <main className="container pt-3 ">

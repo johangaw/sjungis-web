@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router';
 import SongService from '../services/SongService';
 import { SongForm } from './SongForm';
 import { ISongParams } from '../etc';
+import RoutingService from '../services/RoutingService';
 
 export const NewSong: React.FunctionComponent<RouteComponentProps<{}>> = (
   { history }
@@ -13,7 +14,7 @@ export const NewSong: React.FunctionComponent<RouteComponentProps<{}>> = (
       setProcessing(true);
       const song = await SongService.create(params);
       setProcessing(false);
-      history.push(`/${song.urlName}`);
+      history.push(RoutingService.showSong(song.urlName));
     } catch(err) {
       setProcessing(false);
       console.error('kunde inte skapa...', err);

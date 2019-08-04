@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
+import { ISong, ISongParams } from '../etc';
+import RoutingService from '../services/RoutingService';
 import SongService from '../services/SongService';
 import { SongForm } from './SongForm';
-import { ISongParams, ISong } from '../etc';
-import { Spinner } from './Spinner';
+import { Spinner } from './utils/Spinner';
 
 export const EditSong: React.FunctionComponent<RouteComponentProps<{songId: string}>> = (
   { history, match }
@@ -21,7 +22,7 @@ export const EditSong: React.FunctionComponent<RouteComponentProps<{songId: stri
       setProcessing(true);
       const updatedSong = await SongService.edit({...song, ...params} as ISong);
       setProcessing(false);
-      history.push(`/${updatedSong.urlName}`);
+      history.push(RoutingService.showSong(updatedSong.urlName));
     } catch(err) {
       setProcessing(false);
       console.error('kunde inte updatera...', err);
