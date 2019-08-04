@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { ISongParams } from '../etc';
+import { Spinner } from './Spinner';
 
 type Props = {
   song: ISongParams;
-  onSubmit: (song: ISongParams) => void;
+  onSubmit: (song: ISongParams) => Promise<void>;
+  processing?: boolean;
 }
 
 export const SongForm: React.FunctionComponent<Props> = (
-  { song: initialSong, onSubmit }
+  { song: initialSong, onSubmit, processing }
 ) => {
   const [name, setName] = useState<string>(initialSong.name);
   const [melody, setMelody] = useState<string>(initialSong.melody);
   const [lyrics, setLyrics] = useState<string>(initialSong.lyrics);
+
   const handleSubmit = (event: any) => {
     event.stopPropagation();
     event.preventDefault();
@@ -31,6 +34,9 @@ export const SongForm: React.FunctionComponent<Props> = (
       <label htmlFor="lyrics">Text</label>
       <textarea className="form-control" id="lyrics" rows={12} value={lyrics} onChange={(event) => setLyrics(event.target.value)}></textarea>
     </div>
-    <button type="submit" className="btn btn-primary">Spara</button>
+    <div className="d-flex">
+      <button type="submit" disabled={processing} className="btn btn-primary mr-3">Spara</button>
+      {processing ? <Spinner></Spinner> : null}
+    </div>
   </form>
 }
