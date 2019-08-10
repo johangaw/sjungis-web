@@ -8,9 +8,10 @@ import RoutingService from '../services/RoutingService';
 export const ListSongs: React.FC = () => {
   const [songs, setSongs] = useState<ISong[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const byNameAsc = (l: ISong, r: ISong): number => (l.name || '').localeCompare(r.name || '')
   useEffect(() => {
     SongService.all()
-      .then(songs => setSongs(songs))
+      .then(songs => setSongs(songs.sort(byNameAsc)))
       .finally(() => setLoading(false))
   }, [])
 
