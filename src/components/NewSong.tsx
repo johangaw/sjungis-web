@@ -25,6 +25,7 @@ export const NewSong: React.FunctionComponent<RouteComponentProps<{}>> = (
     name: '',
     melody: '',
     lyrics: '',
+    obscene: false,
   }
 
   return <SongForm processing={processing} song={emptySong} onSubmit={onSubmit}></SongForm>
