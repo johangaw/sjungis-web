@@ -15,6 +15,10 @@ class RoutingService {
     return '/ny';
   }
 
+  settings(): string {
+    return '/inställningar';
+  }
+
 }
 
 export default new RoutingService();
