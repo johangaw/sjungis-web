@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ISong } from '../etc';
 import { RouteComponentProps } from 'react-router-dom';
+import { ISong } from '../etc';
+import RoutingService from '../services/RoutingService';
 import SongService from '../services/SongService';
 import { EditButton } from './utils/EditButton';
 import { Spinner } from './utils/Spinner';
-import RoutingService from '../services/RoutingService';
 
 type Props = {
   songId: string;
