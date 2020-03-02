@@ -3,20 +3,20 @@ import { useState } from "react";
 class SettingsService {
   private settings: {
     showObsceneSongs: boolean;
-  }
-  
-  private readonly storageKey = 'sjungis-settings';
+  };
+
+  private readonly storageKey = "sjungis-settings";
 
   constructor() {
-    const data = window.localStorage.getItem(this.storageKey)
+    const data = window.localStorage.getItem(this.storageKey);
     this.settings = {
-      showObsceneSongs: false,
-    }
+      showObsceneSongs: false
+    };
 
     if (data) {
       try {
         this.settings = JSON.parse(data);
-      } catch { }
+      } catch {}
     }
   }
 
@@ -26,21 +26,22 @@ class SettingsService {
 
   set showObsceneSongs(value: boolean) {
     this.settings.showObsceneSongs = value;
-    window.localStorage.setItem(this.storageKey, JSON.stringify(this.settings))
+    window.localStorage.setItem(this.storageKey, JSON.stringify(this.settings));
   }
 }
 
-const instance = new SettingsService()
+const instance = new SettingsService();
 export default instance;
 
-
-export function useSetting<K extends keyof SettingsService>(key: K): [SettingsService[K], (newValue: SettingsService[K]) => void] {
-  const [value, setter] = useState(instance[key])
+export function useSetting<K extends keyof SettingsService>(
+  key: K
+): [SettingsService[K], (newValue: SettingsService[K]) => void] {
+  const [value, setter] = useState(instance[key]);
   return [
     value,
-    (newValue) => {
-      setter(newValue)
-      instance[key] = newValue
+    newValue => {
+      setter(newValue);
+      instance[key] = newValue;
     }
-  ]
+  ];
 }
