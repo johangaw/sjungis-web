@@ -28,7 +28,7 @@ const ListSongsPage: NextPage = () => {
   ) : (
     <ul className="list-group">
       {songs.map((song) => (
-        <li className="list-group-item list-group-item-action">
+        <li className="list-group-item list-group-item-action" key={song._id}>
           <Link href={RoutingService.showSong(song.urlName)} key={song._id}>
             <a>{song.name}</a>
           </Link>
