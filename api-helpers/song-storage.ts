@@ -42,10 +42,13 @@ export async function all(): Promise<ISong[]> {
   return songs;
 }
 
-export async function get(urlName: string): Promise<ISong | null> {
+export async function get(urlName: string): Promise<ISong> {
   const [col, client] = await songsCollection();
   const song = await col.findOne({ urlName: getURL(urlName) });
   client.close();
+  if (!song) {
+    throw Error(`Could not found song with urlName: ${urlName}`);
+  }
   return song;
 }
 
