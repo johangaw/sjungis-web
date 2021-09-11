@@ -1,24 +1,23 @@
 class RoutingService {
   list(): string {
-    return '/';
+    return "/";
   }
 
   showSong(songId: string): string {
-    return '/' + songId;
+    return "/" + songId;
   }
 
   editSong(songId: string): string {
-    return '/updatera/' + songId;
+    return "/edit/" + songId;
   }
 
   newSong(): string {
-    return '/ny';
+    return "/new";
   }
 
   settings(): string {
-    return '/inställningar';
+    return "/settings";
   }
-
 }
 
 export default new RoutingService();

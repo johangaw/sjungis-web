@@ -1,4 +1,4 @@
-import { ISong, ISongParams } from "../etc";
+import { ISong, ISongParams } from "../types/etc";
 
 function parseResponse<T>(): (res: Response) => Promise<T> {
   return async (response) => {
@@ -10,24 +10,25 @@ function parseResponse<T>(): (res: Response) => Promise<T> {
 }
 
 function getJSON<T>(url: string): Promise<T> {
-  return fetch(url).then(parseResponse())
+  return fetch(url).then(parseResponse());
 }
 
-function sendJSON<T>(url: string, data: any, method: 'PUT'|'POST'): Promise<T> {
-  return fetch(
-    url,
-    {
-      method: method,
-      body: JSON.stringify(data),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    }
-  ).then(parseResponse())
+function sendJSON<T>(
+  url: string,
+  data: any,
+  method: "PUT" | "POST"
+): Promise<T> {
+  return fetch(url, {
+    method: method,
+    body: JSON.stringify(data),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  }).then(parseResponse());
 }
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080'
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
 class SongService {
   all(): Promise<ISong[]> {
@@ -39,11 +40,11 @@ class SongService {
   }
 
   create(songParam: ISongParams): Promise<ISong> {
-    return sendJSON(`${API_URL}/api/v1/songs`, songParam, 'POST');
+    return sendJSON(`${API_URL}/api/v1/songs`, songParam, "POST");
   }
 
   edit(song: ISong): Promise<ISong> {
-    return sendJSON(`${API_URL}/api/v1/songs/${song._id}`, song, 'PUT');
+    return sendJSON(`${API_URL}/api/v1/songs/${song._id}`, song, "PUT");
   }
 }
 
