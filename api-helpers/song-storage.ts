@@ -1,7 +1,7 @@
 import { ISong, ISongParams, ISongWithoutId } from "../types/etc";
 import { MongoClient, Collection, ObjectId } from "mongodb";
 
-const MONGO_URL =
+const getMongoUrl = () =>
   process.env["MONGODB_URL"] || "mongodb://localhost:27017/sjungis";
 
 function getURL(name: string): string {
@@ -29,7 +29,7 @@ async function createURL(name: string, id?: string): Promise<string> {
 export async function songsCollection(): Promise<
   [Collection<ISong>, MongoClient]
 > {
-  const client = await MongoClient.connect(MONGO_URL);
+  const client = await MongoClient.connect(getMongoUrl());
   const db = client.db();
   const collection = db.collection<ISong>("songs");
   return [collection, client];
