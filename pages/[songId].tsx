@@ -1,14 +1,15 @@
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { ISong } from "../types/etc";
-import SongService from "../services/SongService";
+import { all, get } from "../api-helpers/song-storage";
 import { EditButton } from "../components/EditButton";
 import { Spinner } from "../components/Spinner";
 import RoutingService from "../services/RoutingService";
-import { NextPage } from "next";
-import { useRouter } from "next/router";
+import SongService from "../services/SongService";
+import { ISong } from "../types/etc";
 
 type Props = {
-  songId: string;
+  initialSong: ISong;
 };
 
 const noteImageStyles = {
@@ -22,19 +23,29 @@ function trimLines(text: string): string {
     .join("\n");
 }
 
-export const ShowSong: NextPage<Props> = () => {
-  const [song, setSong] = useState<ISong | null>(null);
+export const ShowSong: NextPage<Props> = ({ initialSong }) => {
+  const [song, setSong] = useState(initialSong);
+  const [isLoading, setLoading] = useState(false);
   const router = useRouter();
-  const songId = router.query.songId as string;
 
   useEffect(() => {
-    SongService.get(songId).then((song) => setSong(song));
-  }, [songId]);
-  return song ? (
+    if (router.query.refresh) {
+      setLoading(true);
+      SongService.get(song.urlName)
+        .then(setSong)
+        .then(() => setLoading(false));
+    }
+  }, [router.query.refresh]);
+
+  return router.isFallback || isLoading ? (
+    <div className="d-flex justify-content-center">
+      <Spinner></Spinner>
+    </div>
+  ) : (
     <div>
       <EditButton
         className="float-right"
-        onClick={() => router.push(RoutingService.editSong(songId))}
+        onClick={() => router.push(RoutingService.editSong(song.urlName))}
       ></EditButton>
       <h2>{song.name}</h2>
       <p>
@@ -43,16 +54,39 @@ export const ShowSong: NextPage<Props> = () => {
           style={noteImageStyles}
           src="/note.svg"
           alt="Song melody"
-        ></img>{" "}
+        ></img>
         {song.melody}
       </p>
       <pre>{trimLines(song.lyrics)}</pre>
     </div>
-  ) : (
-    <div className="d-flex justify-content-center">
-      <Spinner></Spinner>
-    </div>
   );
+};
+
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+  const song = await get(params?.songId as string).then((song) => ({
+    ...song,
+    _id: String(song._id),
+  }));
+
+  return {
+    props: {
+      initialSong: song,
+    },
+    revalidate: 10,
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = await all().then((songs) =>
+    songs.map((song) => ({
+      params: { songId: decodeURIComponent(song.urlName) },
+    }))
+  );
+
+  return {
+    paths,
+    fallback: true,
+  };
 };
 
 export default ShowSong;

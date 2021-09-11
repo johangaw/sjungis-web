@@ -25,7 +25,7 @@ const EditSong: NextPage = () => {
         ...params,
       } as ISong);
       setProcessing(false);
-      router.push(RoutingService.showSong(updatedSong.urlName));
+      router.push(RoutingService.showSong(updatedSong.urlName, true));
     } catch (err) {
       setProcessing(false);
       console.error("kunde inte updatera...", err);
