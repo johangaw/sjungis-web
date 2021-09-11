@@ -27,24 +27,21 @@ function sendJSON<T>(
     },
   }).then(parseResponse());
 }
-
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
-
 class SongService {
   all(): Promise<ISong[]> {
-    return getJSON(`${API_URL}/api/v1/songs`);
+    return getJSON(`/api/songs`);
   }
 
   get(urlName: string): Promise<ISong> {
-    return getJSON(`${API_URL}/api/v1/songs/${urlName}`);
+    return getJSON(`/api/songs/${urlName}`);
   }
 
   create(songParam: ISongParams): Promise<ISong> {
-    return sendJSON(`${API_URL}/api/v1/songs`, songParam, "POST");
+    return sendJSON(`/api/songs`, songParam, "POST");
   }
 
   edit(song: ISong): Promise<ISong> {
-    return sendJSON(`${API_URL}/api/v1/songs/${song._id}`, song, "PUT");
+    return sendJSON(`/api/songs/${song._id}`, song, "PUT");
   }
 }
 
