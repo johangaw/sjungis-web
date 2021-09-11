@@ -1,40 +1,36 @@
 import { NextPage } from "next";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { ISong } from "../types/etc";
-import RoutingService from "../services/RoutingService";
-import SettingsService from "../services/SettingsService";
-import SongService from "../services/SongService";
+import React from "react";
 import { Spinner } from "../components/Spinner";
+import { useCachedSongList } from "../hooks/useCachedSongs";
+import RoutingService from "../services/RoutingService";
 
 const ListSongsPage: NextPage = () => {
-  const [songs, setSongs] = useState<ISong[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  useEffect(() => {
-    const showObsceneSongs = SettingsService.showObsceneSongs;
-    const byNameAsc = (l: ISong, r: ISong): number =>
-      (l.name || "").localeCompare(r.name || "");
-    const obsceneSongs = (song: ISong): Boolean =>
-      showObsceneSongs || !song.obscene;
-    SongService.all()
-      .then((songs) => setSongs(songs.filter(obsceneSongs).sort(byNameAsc)))
-      .finally(() => setLoading(false));
-  }, []);
+  const { songs, loading } = useCachedSongList();
 
-  return loading ? (
-    <div className="d-flex justify-content-center">
-      <Spinner></Spinner>
+  return (
+    <div className="position-relative">
+      <ul className="list-group">
+        {songs.map((song) => (
+          <Link href={RoutingService.showSong(song.urlName)} key={song._id}>
+            <li
+              className="list-group-item list-group-item-action"
+              key={song._id}
+            >
+              <a>{song.name}</a>
+            </li>
+          </Link>
+        ))}
+      </ul>
+      {loading && (
+        <div
+          className="position-absolute"
+          style={{ top: "-8px", right: "-8px" }}
+        >
+          <Spinner></Spinner>
+        </div>
+      )}
     </div>
-  ) : (
-    <ul className="list-group">
-      {songs.map((song) => (
-        <Link href={RoutingService.showSong(song.urlName)} key={song._id}>
-          <li className="list-group-item list-group-item-action" key={song._id}>
-            <a>{song.name}</a>
-          </li>
-        </Link>
-      ))}
-    </ul>
   );
 };
 
