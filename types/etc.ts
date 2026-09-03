@@ -6,7 +6,3 @@ export interface ISong {
   urlName: string;
   obscene: boolean;
 }
-
-export type ISongWithoutId = Omit<ISong, "_id">;
-
-export type ISongParams = Pick<ISong, "name" | "lyrics" | "melody" | "obscene">;

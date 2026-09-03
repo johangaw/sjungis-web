@@ -3,16 +3,8 @@ class RoutingService {
     return "/";
   }
 
-  showSong(songId: string, refresh: boolean = false): string {
-    return "/" + songId + (refresh ? "?refresh=true" : "");
-  }
-
-  editSong(songId: string): string {
-    return "/edit/" + songId;
-  }
-
-  newSong(): string {
-    return "/new";
+  showSong(songId: string): string {
+    return "/" + songId;
   }
 
   settings(): string {

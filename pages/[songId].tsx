@@ -1,15 +1,11 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { all, get } from "../api-helpers/song-storage";
-import { EditButton } from "../components/EditButton";
+import { all, get } from "../api-helpers/song-file";
 import { Spinner } from "../components/Spinner";
-import RoutingService from "../services/RoutingService";
-import SongService from "../services/SongService";
 import { ISong } from "../types/etc";
 
 type Props = {
-  initialSong: ISong;
+  song: ISong;
 };
 
 const noteImageStyles = {
@@ -23,30 +19,15 @@ function trimLines(text: string): string {
     .join("\n");
 }
 
-export const ShowSong: NextPage<Props> = ({ initialSong }) => {
-  const [song, setSong] = useState(initialSong);
-  const [isLoading, setLoading] = useState(false);
+export const ShowSong: NextPage<Props> = ({ song }) => {
   const router = useRouter();
 
-  useEffect(() => {
-    if (router.query.refresh) {
-      setLoading(true);
-      SongService.get(song.urlName)
-        .then(setSong)
-        .then(() => setLoading(false));
-    }
-  }, [router.query.refresh]);
-
-  return router.isFallback || isLoading ? (
+  return router.isFallback ? (
     <div className="d-flex justify-content-center">
       <Spinner></Spinner>
     </div>
   ) : (
     <div>
-      <EditButton
-        className="float-right"
-        onClick={() => router.push(RoutingService.editSong(song.urlName))}
-      ></EditButton>
       <h2>{song.name}</h2>
       <p>
         <img
@@ -63,14 +44,11 @@ export const ShowSong: NextPage<Props> = ({ initialSong }) => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  const song = await get(params?.songId as string).then((song) => ({
-    ...song,
-    _id: String(song._id),
-  }));
+  const song = await get(params?.songId as string);
 
   return {
     props: {
-      initialSong: song,
+      song,
     },
     revalidate: 10,
   };

@@ -14,11 +14,6 @@ export const Navbar: React.FC = () => {
         <a className="navbar-brand">Sjungis.se</a>
       </Link>
       <div className="navbar-nav flex-row">
-        <div className="mr-3">
-          <Link href={RoutingService.newSong()}>
-            <img style={iconSize} src="/plus.svg" alt="Add song"></img>
-          </Link>
-        </div>
         <Link href={RoutingService.settings()}>
           <img style={iconSize} src="/gear.svg" alt="Edit settings"></img>
         </Link>

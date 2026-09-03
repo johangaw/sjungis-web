@@ -1,4 +1,4 @@
-import { ISong, ISongParams } from "../types/etc";
+import { ISong } from "../types/etc";
 
 function parseResponse<T>(): (res: Response) => Promise<T> {
   return async (response) => {
@@ -13,35 +13,30 @@ function getJSON<T>(url: string): Promise<T> {
   return fetch(url).then(parseResponse());
 }
 
-function sendJSON<T>(
-  url: string,
-  data: any,
-  method: "PUT" | "POST"
-): Promise<T> {
-  return fetch(url, {
-    method: method,
-    body: JSON.stringify(data),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-  }).then(parseResponse());
+function decodeSafe(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
 }
+
 class SongService {
   all(): Promise<ISong[]> {
-    return getJSON(`/api/songs`);
+    return getJSON<ISong[]>(`/songs.json`).then((songs) =>
+      songs.map((song) => ({ ...song, obscene: !!song.obscene }))
+    );
   }
 
   get(urlName: string): Promise<ISong> {
-    return getJSON(`/api/songs/${urlName}`);
-  }
-
-  create(songParam: ISongParams): Promise<ISong> {
-    return sendJSON(`/api/songs`, songParam, "POST");
-  }
-
-  edit(song: ISong): Promise<ISong> {
-    return sendJSON(`/api/songs/${song._id}`, song, "PUT");
+    const wanted = decodeSafe(urlName);
+    return this.all().then((songs) => {
+      const song = songs.find((song) => decodeSafe(song.urlName) === wanted);
+      if (!song) {
+        throw Error(`Could not found song with urlName: ${urlName}`);
+      }
+      return song;
+    });
   }
 }
 
